@@ -1,6 +1,7 @@
 package com.example.learntoprogram;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -26,6 +27,11 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     public void updateRedditData(ArrayList<String> redditThreads, ArrayList<String> detailRedditThreads) {
         mRedditThreads = redditThreads;
         mDetailRedditThreads = detailRedditThreads;
+        notifyDataSetChanged();
+    }
+
+    public void updatePosts(SQLiteDatabase db) {
+
         notifyDataSetChanged();
     }
 
