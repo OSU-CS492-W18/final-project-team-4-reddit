@@ -1,42 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cardView"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tv_thread_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="#FBFBFB">
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="6dp"
+    card_view:cardElevation="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="100dp">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_thread_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp" />
+            android:layout_marginRight="16dp"
+            android:adjustViewBounds="true"
+            android:saveEnabled="false"
+            android:src="@drawable/ic_default_thread" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/tv_thread_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageView"
-            android:text="Title"
-            android:textSize="30sp" />
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/iv_thread_icon"
+            android:textSize="16dp"
+            android:textColor="#1E1E1E"
+            android:textStyle="bold"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="2"/>
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/tv_thread_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
-            android:layout_toRightOf="@+id/imageView"
-            android:text="Description" />
+            android:layout_below="@+id/tv_thread_title"
+            android:layout_toRightOf="@+id/iv_thread_icon"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"/>
 
     </RelativeLayout>
 

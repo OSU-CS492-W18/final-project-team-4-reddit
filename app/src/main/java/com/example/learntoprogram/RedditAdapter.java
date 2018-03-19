@@ -42,7 +42,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     @Override
     public RedditThreadViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from( parent.getContext() );
-        View view = inflater.inflate(R.layout.search_result_item,parent,false);
+        View view = inflater.inflate(R.layout.post_item,parent,false);
         return new RedditThreadViewHolder(view);
 
     }
@@ -58,11 +58,13 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     }
 
     class RedditThreadViewHolder extends RecyclerView.ViewHolder {
-        private TextView mRedditThreadTV;
+        private TextView mThreadTitleTV;
+        private TextView mThreadAuthorTV;
 
         public RedditThreadViewHolder(View itemView) {
             super(itemView);
-            mRedditThreadTV = (TextView)itemView.findViewById(R.id.tv_reddit_thread_text);
+            mThreadTitleTV = (TextView)itemView.findViewById(R.id.tv_thread_title);
+            mThreadAuthorTV = (TextView)itemView.findViewById(R.id.tv_thread_author);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,9 +78,20 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
         public void bind(Cursor cursor) {
 
             if ( cursor != null ) {
-                mRedditThreadTV.setText( cursor.getString(
-                        cursor.getColumnIndexOrThrow( PostsContract.LoadedPosts.COLUMN_POST_TITLE )
-                ));
+                String title = cursor.getString(
+                        cursor.getColumnIndexOrThrow(
+                                PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                        )
+                );
+
+                String author = cursor.getString(
+                        cursor.getColumnIndexOrThrow(
+                                PostsContract.LoadedPosts.COLUMN_POST_USER
+                        )
+                );
+
+                mThreadTitleTV.setText( title );
+                mThreadAuthorTV.setText( author );
             }
 
         }

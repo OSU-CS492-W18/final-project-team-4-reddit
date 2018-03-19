@@ -46,36 +46,6 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
 
-    private static final String[] dummyRedditThreads = {
-            "Dummy thread 1",
-            "Dummy thread 2",
-            "Dummy thread 3",
-            "Dummy thread 4",
-            "Dummy thread 5",
-            "Dummy thread 6",
-            "Dummy thread 7",
-            "Dummy thread 8",
-            "Dummy thread 9",
-            "Dummy thread 10",
-            "Dummy thread 11",
-            "Dummy thread 12"
-    };
-
-    private static final String[] dummyDetailRedditThreads = {
-            "Dummy detail thread 1",
-            "Dummy detail thread 2",
-            "Dummy detail thread 3",
-            "Dummy detail thread 4",
-            "Dummy detail thread 5",
-            "Dummy detail thread 6",
-            "Dummy detail thread 7",
-            "Dummy detail thread 8",
-            "Dummy detail thread 9",
-            "Dummy detail thread 10",
-            "Dummy detail thread 11",
-            "Dummy detail thread 12"
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,11 +62,6 @@ public class MainActivity extends AppCompatActivity
 
         mRedditAdapter = new RedditAdapter(this);
         mRedditThreadsRV.setAdapter(mRedditAdapter);
-
-//        mRedditAdapter.updateRedditData(
-//                new ArrayList<String>(Arrays.asList(dummyRedditThreads)),
-//                new ArrayList<String>(Arrays.asList(dummyDetailRedditThreads))
-//        );
 
         Cursor cursor = mDB.rawQuery( "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME, null );
         mRedditAdapter.updatePosts( cursor );
