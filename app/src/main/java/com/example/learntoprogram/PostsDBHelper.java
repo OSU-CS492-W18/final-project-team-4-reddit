@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 import java.util.ArrayList;
 
@@ -38,31 +39,33 @@ public class PostsDBHelper extends SQLiteOpenHelper {
     }
 
     public long addPostToDB(SQLiteDatabase db, RedditUtils.Post post) {
-        final String SQL_INSERT_POST =
-                "INSERT INTO " + PostsContract.LoadedPosts.TABLE_NAME + "(" +
-                        PostsContract.LoadedPosts.COLUMN_POST_TITLE + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_USER + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_SUBREDDIT + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_CATEGORY + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_URL + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_IMG + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_COMMENT_COUNT + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_UPVOTES + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_DOWNVOTES + ", " +
-                        PostsContract.LoadedPosts.COLUMN_POST_TIMESTAMP +
-                        ") VALUES(" +
-                        "\"" + post.title + "\", " +
-                        "\"" + post.user + "\", " +
-                        "\"" + post.subreddit + "\", " +
-                        "\"" + post.category + "\", " +
-                        "\"" + post.url + "\", " +
-                        "\"" +  post.image + "\", " +
-                        post.comments + ", " +
-                        post.upvotes + ", " +
-                        post.downvotes + ", " +
-                        post.timestamp +
-                        ");";
-        db.execSQL( SQL_INSERT_POST );
+        SQLiteStatement SQL_INSERT_THREAD = db.compileStatement(
+            "INSERT INTO " + PostsContract.LoadedPosts.TABLE_NAME + "(" +
+                    PostsContract.LoadedPosts.COLUMN_POST_TITLE + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_USER + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_SUBREDDIT + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_CATEGORY + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_URL + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_IMG + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_COMMENT_COUNT + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_UPVOTES + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_DOWNVOTES + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_TIMESTAMP +
+                    ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        );
+
+        SQL_INSERT_THREAD.bindString( 1, post.title );
+        SQL_INSERT_THREAD.bindString( 2, post.user );
+        SQL_INSERT_THREAD.bindString( 3, post.subreddit );
+        SQL_INSERT_THREAD.bindString( 4, post.category );
+        SQL_INSERT_THREAD.bindString( 5, post.url );
+        SQL_INSERT_THREAD.bindString( 6, post.image );
+        SQL_INSERT_THREAD.bindLong( 7, post.comments );
+        SQL_INSERT_THREAD.bindLong( 8, post.upvotes );
+        SQL_INSERT_THREAD.bindLong( 9, post.downvotes );
+        SQL_INSERT_THREAD.bindLong( 10, post.timestamp );
+
+        SQL_INSERT_THREAD.executeInsert();
 
         return 0;
     }

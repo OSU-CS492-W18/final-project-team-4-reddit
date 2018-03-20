@@ -17,7 +17,7 @@ public class RedditUtils {
     final static String REDDIT_SUBREDDIT_PARAM = "r";
     final static String REDDIT_SUBREDDIT_VALUE = "";
     final static String REDDIT_POST_TYPE_VALUE = "";
-    final static String REDDIT_COUNT_PARAM = "count";
+    final static String REDDIT_COUNT_PARAM = "limit";
     final static String REDDIT_COUNT_VALUE = "";
     final static String REDDIT_SORT_PARAM = "sort";
     final static String REDDIT_SORT_VALUE = "";

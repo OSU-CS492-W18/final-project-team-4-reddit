@@ -3,6 +3,7 @@ package com.example.learntoprogram;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,8 +91,8 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
                         )
                 );
 
-                mThreadTitleTV.setText( title );
-                mThreadAuthorTV.setText( author );
+                mThreadTitleTV.setText( Html.fromHtml( title, Html.FROM_HTML_MODE_COMPACT ) );
+                mThreadAuthorTV.setText( Html.fromHtml( author, Html.FROM_HTML_MODE_COMPACT ) );
             }
 
         }

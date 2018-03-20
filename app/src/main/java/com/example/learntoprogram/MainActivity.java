@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         Button searchButton = (Button)findViewById(R.id.btn_search);
 
-        doRedditSearch("learnprogramming", "new.json", "25", "new" );
+        doRedditSearch("learnprogramming", "new.json", "50", "new" );
     }
 
     private void doRedditSearch(String subreddit, String postType, String postCount, String sortValue) {
@@ -110,12 +110,10 @@ public class MainActivity extends AppCompatActivity
         PostsDBHelper dbHelper = new PostsDBHelper(this);
 
         mLoadingProgressBar.setVisibility(View.INVISIBLE);
-        Log.d( TAG, "got results from loader: " + data );
         if (data != null) {
 
             ArrayList<RedditUtils.Post> posts = RedditUtils.parsePostsJSON( data );
             dbHelper.storePosts( mDB, posts );
-            System.out.println( "POSTS LOADED: " + posts.size() );
 
             Cursor cursor = mDB.rawQuery( "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME, null );
 
