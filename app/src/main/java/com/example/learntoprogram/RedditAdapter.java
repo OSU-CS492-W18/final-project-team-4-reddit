@@ -61,11 +61,13 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     class RedditThreadViewHolder extends RecyclerView.ViewHolder {
         private TextView mThreadTitleTV;
         private TextView mThreadAuthorTV;
+        private TextView mThreadUpvotesTV;
 
         public RedditThreadViewHolder(View itemView) {
             super(itemView);
             mThreadTitleTV = (TextView)itemView.findViewById(R.id.tv_thread_title);
             mThreadAuthorTV = (TextView)itemView.findViewById(R.id.tv_thread_author);
+            mThreadUpvotesTV = (TextView)itemView.findViewById(R.id.tv_thread_upvotes);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,8 +93,17 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
                         )
                 );
 
+                Long upvotes = cursor.getLong(
+                        cursor.getColumnIndexOrThrow(
+                                PostsContract.LoadedPosts.COLUMN_POST_UPVOTES
+                        )
+                );
+
+
                 mThreadTitleTV.setText( Html.fromHtml( title, Html.FROM_HTML_MODE_COMPACT ) );
                 mThreadAuthorTV.setText( Html.fromHtml( author, Html.FROM_HTML_MODE_COMPACT ) );
+                mThreadUpvotesTV.setText( upvotes.toString() );
+
             }
 
         }
