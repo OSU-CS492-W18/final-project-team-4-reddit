@@ -3,4 +3,24 @@
     <string name="loading_error_message">Failed to search. Check your internet connection and try again.</string>
     <string name="hint">Search /r/learnprogramming...</string>
     <string name="button_search">Search</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Strings for text color pref -->
+    <string name="pref_text_color_key" translatable="false">pref_text_color</string>
+    <string name="pref_text_color_title">Text color</string>
+    <string name="pref_text_color_default_value">Black</string>
+
+    <!-- Strings for theme pref -->
+    <string name="pref_theme_key" translatable="false">pref_theme</string>
+    <string name="pref_theme_title">Theme</string>
+    <string name="pref_theme_default_value">Light</string>
+
+    <!-- Strings for theme pref -->
+    <string name="pref_filter_switch_key" translatable="false">pref_filter_switch</string>
+    <string name="pref_filter_switch_title">Save filtering preferences</string>
+    <string name="pref_filter_switch_summary">When enabled the app will cache your search queries and use them to filter out search results.</string>
+    <string name="pref_filter_switch_default_value">false</string>
+
+
 </resources>
