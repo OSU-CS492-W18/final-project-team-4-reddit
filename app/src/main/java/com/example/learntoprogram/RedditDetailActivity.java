@@ -29,7 +29,6 @@ public class RedditDetailActivity extends AppCompatActivity {
     private TextView mTVcomments;
     private TextView mTVupvotes;
     private TextView mTVdownvotes;
-    private TextView mTVtimestamp;
 
     private SQLiteDatabase mDB;
 
@@ -46,7 +45,6 @@ public class RedditDetailActivity extends AppCompatActivity {
         mTVcomments = findViewById(R.id.tv_detail_comments);
         mTVupvotes = findViewById(R.id.tv_detail_upvotes);
         mTVdownvotes = findViewById(R.id.tv_detail_downvotes);
-        mTVtimestamp = findViewById(R.id.tv_detail_timestamp);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(RedditUtils.EXTRA_POST)) {
@@ -58,7 +56,6 @@ public class RedditDetailActivity extends AppCompatActivity {
             mTVcomments.setText(String.valueOf(mPost.comments));
             mTVupvotes.setText(String.valueOf(mPost.upvotes));
             mTVdownvotes.setText(String.valueOf(mPost.downvotes));
-            mTVtimestamp.setText(String.valueOf(mPost.timestamp));
         }
 
     }
