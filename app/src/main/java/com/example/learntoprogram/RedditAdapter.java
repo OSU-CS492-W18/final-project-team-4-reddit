@@ -55,7 +55,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String detailedReddit);
+        void onItemClick(RedditUtils.Post detailedReddit);
     }
 
     class RedditThreadViewHolder extends RecyclerView.ViewHolder {

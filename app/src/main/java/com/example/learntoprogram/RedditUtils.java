@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import java.util.regex.Pattern;
 
 
 public class RedditUtils {
+
+    public static final String EXTRA_POST = "RedditUtils.Post";
+
     final static String REDDIT_BASE_URL = "http://www.reddit.com";
     final static String REDDIT_SUBREDDIT_PARAM = "r";
     final static String REDDIT_SUBREDDIT_VALUE = "";
@@ -64,7 +68,7 @@ public class RedditUtils {
             "CSHARP"
     };
 
-    public static class Post {
+    public static class Post implements Serializable {
         public String title;
         public String user;
         public String subreddit;
