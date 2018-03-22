@@ -24,17 +24,17 @@ public class RedditUtils {
     final static String REDDIT_SORT_PARAM = "sort";
     final static String REDDIT_SORT_VALUE = "";
 
-    final static Pattern C_PATTERN = Pattern.compile("( ?(\\[C\\]) ?)");
-    final static Pattern CPP_PATTERN = Pattern.compile("(( ?(\\[CPP\\])|(\\[C\\+\\+\\]) ?)|( ?(CPP)|(C\\+\\+) ?))");
-    final static Pattern JAVA_PATTERN = Pattern.compile("(( ?(\\[JAVA\\]) ?)|( ?(JAVA) ?))");
-    final static Pattern PYTHON_PATTERN = Pattern.compile("(( ?(\\[PYTHON\\]) ?)|( ?(PYTHON) ?))");
-    final static Pattern HTML_PATTERN = Pattern.compile("(( ?(\\[HTML\\]) ?)|( ?(HTML) ?))");
-    final static Pattern JAVASCRIPT_PATTERN = Pattern.compile("(( ?(\\[JAVASCRIPT\\])|(\\[JS\\])|(\\.JS) ?)|( ?(JAVASCRIPT)|(JS) ?))");
-    final static Pattern PHP_PATTERN = Pattern.compile("(( ?(\\[PHP\\]) ?)|( ?(PHP) ?))");
-    final static Pattern GOLANG_PATTERN = Pattern.compile("(( ?(\\[GOLANG\\])|(\\[GO\\]) ?)|( ?(GOLANG)|(GO) ?))");
-    final static Pattern SWIFT_PATTERN = Pattern.compile("(( ?(\\[SWIFT\\]) ?)|( ?(SWIFT) ?))");
-    final static Pattern RUBY_PATTERN = Pattern.compile("(( ?(\\[RUBY\\]) ?)|( ?(RUBY) ?))");
-    final static Pattern CSHARP_PATTERN = Pattern.compile("(( ?(\\[C#\\]) ?)|( ?(C#) ?))");
+    final static Pattern C_PATTERN = Pattern.compile("(( ?(\\[C\\]) ?)|(\\b(C(?!\\+|#))\\b))");
+    final static Pattern CPP_PATTERN = Pattern.compile("(( ?(\\[CPP\\])|(\\[C\\+\\+\\]) ?)|(\\b(CPP)|(C\\+\\+) ?))");
+    final static Pattern JAVA_PATTERN = Pattern.compile("(( ?(\\[JAVA\\]) ?)|(\\b(JAVA) ?))");
+    final static Pattern PYTHON_PATTERN = Pattern.compile("(( ?(\\[PYTHON\\]) ?)|(\\b(PYTHON) ?))");
+    final static Pattern HTML_PATTERN = Pattern.compile("(( ?(\\[HTML\\]) ?)|(\\b(HTML) ?))");
+    final static Pattern JAVASCRIPT_PATTERN = Pattern.compile("(( ?(\\[JAVASCRIPT\\])|(\\[JS\\])|(\\.JS) ?)|(\\b(JAVASCRIPT)|(JS)\\b))");
+    final static Pattern PHP_PATTERN = Pattern.compile("(( ?(\\[PHP\\]) ?)|(\\b(PHP) ?))");
+    final static Pattern GOLANG_PATTERN = Pattern.compile("(( ?(\\[GOLANG\\])|(\\[GO\\]) ?)|(\\b(GOLANG)|(GO)\\b))");
+    final static Pattern SWIFT_PATTERN = Pattern.compile("(( ?(\\[SWIFT\\]) ?)|(\\b(SWIFT) ?)|(\\b(IOS) ?))");
+    final static Pattern RUBY_PATTERN = Pattern.compile("(( ?(\\[RUBY\\]) ?)|(\\b(RUBY) ?))");
+    final static Pattern CSHARP_PATTERN = Pattern.compile("(( ?(\\[C#\\]) ?)|(\\b(C#) ?))");
 
     final static Pattern[] patterns = {
             C_PATTERN,
@@ -125,6 +125,8 @@ public class RedditUtils {
                 post.timestamp = item.getInt( "created_utc" );
 
                 post.category = parseThreadCategory( post.title );
+
+                // System.out.println( post.category + "  ==  " + post.title );
 
                 postsList.add( post );
             }
