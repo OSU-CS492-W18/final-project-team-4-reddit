@@ -74,9 +74,41 @@ public class MainActivity extends AppCompatActivity
 
         mSearchBoxET = (EditText)findViewById(R.id.et_search_box);
 
-        Button searchButton = (Button)findViewById(R.id.btn_search);
+        Button filterButton = (Button)findViewById(R.id.btn_search);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String filterText = mSearchBoxET.getText().toString().toUpperCase();
+                String filterQuery = RedditUtils.parseThreadCategory( filterText );
 
+                Cursor cursor;
+
+                if ( !TextUtils.isEmpty( filterQuery ) ) {
+                    cursor = mDB.rawQuery(
+                            "SELECT * FROM " +
+                                    PostsContract.LoadedPosts.TABLE_NAME +
+                                    " WHERE " + PostsContract.LoadedPosts.COLUMN_POST_CATEGORY +
+                                    "='" + filterQuery + "'",
+                            null
+                    );
+                } else {
+                    cursor = mDB.rawQuery(
+                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                            null
+                    );
+                }
+
+                mRedditAdapter.updatePosts( cursor );
+            }
+        });
+
+//        doRedditSearch("cpp", "new.json", "50", "new" );
+//        doRedditSearch("java", "new.json", "50", "new" );
+//        doRedditSearch("Python", "new.json", "50", "new" );
+//        doRedditSearch("golang", "new.json", "50", "new" );
+//        doRedditSearch("javascript", "new.json", "50", "new" );
         doRedditSearch("learnprogramming", "new.json", "50", "new" );
+
     }
 
     private void doRedditSearch(String subreddit, String postType, String postCount, String sortValue) {
@@ -136,7 +168,10 @@ public class MainActivity extends AppCompatActivity
             ArrayList<RedditUtils.Post> posts = RedditUtils.parsePostsJSON( data );
             dbHelper.storePosts( mDB, posts );
 
-            Cursor cursor = mDB.rawQuery( "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME, null );
+            Cursor cursor = mDB.rawQuery(
+                    "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                    null
+            );
 
             mRedditAdapter.updatePosts( cursor );
 

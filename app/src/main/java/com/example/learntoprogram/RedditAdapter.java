@@ -76,6 +76,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
 //                    mOnItemClickListener.onItemClick(detailRedditThreads);
                 }
             });
+
         }
 
         public void bind(Cursor cursor) {
@@ -98,7 +99,6 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
                                 PostsContract.LoadedPosts.COLUMN_POST_UPVOTES
                         )
                 );
-
 
                 mThreadTitleTV.setText( Html.fromHtml( title, Html.FROM_HTML_MODE_COMPACT ) );
                 mThreadAuthorTV.setText( Html.fromHtml( author, Html.FROM_HTML_MODE_COMPACT ) );
