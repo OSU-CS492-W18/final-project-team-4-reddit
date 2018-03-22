@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity
             );
 
             mRedditAdapter.updatePosts( cursor );
+            mRedditAdapter.updatePostsList( posts );
 
             mLoadingErrorMessage.setVisibility(View.INVISIBLE);
             mRedditThreadsRV.setVisibility(View.VISIBLE);

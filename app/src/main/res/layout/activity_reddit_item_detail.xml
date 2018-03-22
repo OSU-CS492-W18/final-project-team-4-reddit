@@ -23,17 +23,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="Posted by: "/>
+            android:text="@string/detail_user_string"/>
 
         <TextView
             android:id="@+id/tv_detail_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"/>
@@ -49,43 +49,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="At: "/>
-
-        <TextView
-            android:id="@+id/tv_detail_timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textColor="#000"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textColor="#000"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:text="Under: "/>
+            android:text="@string/detail_subr_string"/>
 
         <TextView
             android:id="@+id/tv_detail_subreddit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"/>
@@ -101,17 +75,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#000"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:text="URL: "/>
+            android:text="@string/detail_url_string"/>
 
         <TextView
             android:id="@+id/tv_detail_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textColor="#0000EE"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -149,7 +123,7 @@
             android:id="@+id/iv_detail_upvote_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="60dp"
             android:layout_marginRight="8dp"
             android:alpha="0.4"
             android:adjustViewBounds="true"
@@ -170,7 +144,7 @@
             android:id="@+id/iv_detail_downvote_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="60dp"
             android:layout_marginRight="8dp"
             android:alpha="0.4"
             android:scaleY="-1"
