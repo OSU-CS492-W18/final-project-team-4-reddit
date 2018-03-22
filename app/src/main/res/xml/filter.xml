@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:key="@string/pref_filter_switch_key"
+        android:title="@string/pref_filter_switch_title"
+        android:summary="@string/pref_filter_switch_summary"
+        android:defaultValue="@string/pref_filter_switch_default_value"/>
+
+    <EditTextPreference
+        android:key="@string/pref_text_color_key"
+        android:title="@string/pref_text_color_title"
+        android:defaultValue="@string/pref_text_color_default_value"/>
+
+    <EditTextPreference
+        android:key="@string/pref_theme_key"
+        android:title="@string/pref_theme_title"
+        android:defaultValue="@string/pref_theme_default_value"/>
+
+</PreferenceScreen>
