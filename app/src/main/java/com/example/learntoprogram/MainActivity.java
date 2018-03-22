@@ -132,12 +132,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(String detailedReddit) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        mToast = Toast.makeText(this, detailedReddit, Toast.LENGTH_LONG);
-        mToast.show();
+    public void onItemClick(RedditUtils.Post post) {
+        Intent detailedPostIntent = new Intent(this, RedditDetailActivity.class);
+        detailedPostIntent.putExtra(RedditUtils.EXTRA_POST, post);
+        startActivity(detailedPostIntent);
     }
 
     @Override
