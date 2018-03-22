@@ -9,11 +9,16 @@
     <EditTextPreference
         android:key="@string/pref_text_color_key"
         android:title="@string/pref_text_color_title"
-        android:defaultValue="@string/pref_text_color_default_value"/>
+        android:defaultValue="@string/pref_text_color_default_value"
+        android:summary="@string/pref_text_color_default_value"/>
 
-    <EditTextPreference
+    <ListPreference
         android:key="@string/pref_theme_key"
         android:title="@string/pref_theme_title"
-        android:defaultValue="@string/pref_theme_default_value"/>
+        android:defaultValue="@string/pref_theme_default_value"
+        android:dialogTitle="@string/pref_theme_title"
+        android:entries="@array/pref_theme_entries"
+        android:entryValues="@array/pref_theme_values"
+        android:summary="%s" />
 
 </PreferenceScreen>

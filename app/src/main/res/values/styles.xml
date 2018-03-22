@@ -9,4 +9,10 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
+    <style name="Light" parent="@android:style/Theme.Light">
+    </style>
+
+    <style name="Black" parent="@android:style/Theme.Black">
+    </style>
+
 </resources>
