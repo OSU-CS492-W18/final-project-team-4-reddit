@@ -1,5 +1,6 @@
 package com.example.learntoprogram;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.prefs.PreferenceChangeEvent;
 
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
@@ -31,7 +33,8 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity
         implements RedditAdapter.OnItemClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        LoaderManager.LoaderCallbacks<String>,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String SEARCH_URL_KEY = "redditURL";
@@ -47,11 +50,6 @@ public class MainActivity extends AppCompatActivity
     private TextView mLoadingErrorMessage;
 
     public String url;
-    public String subreddit;
-    public String postType;
-    public String after;
-    public String postCount;
-    public String sortValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,21 +126,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        loadPosts(true);
-//        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        loadPosts(sharedPreferences, true);
+        //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
 
         getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
 
     }
 
-    @Override
-    protected void onDestroy() {
-        mDB.close();
-        super.onDestroy();
-    }
-
     private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
@@ -178,6 +173,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        mDB.close();
+        super.onDestroy();
+    }
+
+    @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         String url = null;
         if (args != null) {
@@ -186,15 +187,19 @@ public class MainActivity extends AppCompatActivity
         return new PostsLoader(this, url);
     }
 
-/*    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }*/
+    public void loadPosts(SharedPreferences sharedPreferences, boolean initialLoad) {
+        String textColor = sharedPreferences.getString(
+                getString(R.string.pref_text_color_key),
+                getString(R.string.pref_text_color_default_value)
+        );
 
-    public void loadPosts(boolean initialLoad) {
+        String theme = sharedPreferences.getString(
+                getString(R.string.pref_theme_key),
+                getString(R.string.pref_theme_default_value)
+        );
+
         mLoadingProgressBar.setVisibility(View.VISIBLE);
 
-//        String redditURL = RedditUtils.buildRedditURL(subreddit, postType, after, postCount, sortValue);
         Bundle loaderArgs = new Bundle();
         loaderArgs.putString(SEARCH_URL_KEY, url);
         LoaderManager loaderManager = getSupportLoaderManager();
@@ -239,6 +244,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        loadPosts(sharedPreferences, false);
 
+        String forecastLocation = sharedPreferences.getString(
+                getString(R.string.pref_text_color_key),
+                getString(R.string.pref_text_color_default_value)
+        );
+
+    }
 
 }
