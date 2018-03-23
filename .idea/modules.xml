@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CS492-Project.iml" filepath="$PROJECT_DIR$/CS492-Project.iml" />
+      <module fileurl="file://C:\Users\anon\Documents\University\cs492\final\final-project-team-4-reddit\CS492-Project.iml" filepath="C:\Users\anon\Documents\University\cs492\final\final-project-team-4-reddit\CS492-Project.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/final-project-team-4-reddit.iml" filepath="$PROJECT_DIR$/final-project-team-4-reddit.iml" />
     </modules>
   </component>
 </project>
