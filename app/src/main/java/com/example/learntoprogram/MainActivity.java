@@ -56,18 +56,30 @@ public class MainActivity extends AppCompatActivity
 
     public String url;
 
+    private static final String THREADS_LOADED_KEY = "THREADS_LOADED";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         //Sets color scheme
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         setUpTheme(pref);
-        super.onCreate(savedInstanceState);
+
+        boolean threadsLoaded = false;
+
+        if ( savedInstanceState != null && savedInstanceState.containsKey( THREADS_LOADED_KEY ) ) {
+            threadsLoaded = (boolean)savedInstanceState.getSerializable( THREADS_LOADED_KEY );
+        }
 
         setContentView(R.layout.activity_main);
 
         PostsDBHelper dbHelper = new PostsDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
-        dbHelper.clearTable( mDB );
+
+        if ( !threadsLoaded ) {
+            dbHelper.clearTable( mDB );
+        }
 
         mRedditThreadsRV = findViewById(R.id.rv_reddit_threads);
 
@@ -155,8 +167,10 @@ public class MainActivity extends AppCompatActivity
 
         pref.registerOnSharedPreferenceChangeListener(this);
 
-        loadPosts(pref, true);
-        //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        if ( !threadsLoaded ) {
+            loadPosts(pref, true);
+            //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        }
 
         getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
     }
@@ -270,9 +284,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 //        onCreate(new Bundle());
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if ( mDB != null ) {
+            outState.putSerializable( THREADS_LOADED_KEY, true );
+        } else {
+            outState.putSerializable( THREADS_LOADED_KEY, false );
+        }
     }
 }
