@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CS492-Project.iml" filepath="$PROJECT_DIR$/CS492-Project.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/final-project-team-4-reddit.iml" filepath="$PROJECT_DIR$/final-project-team-4-reddit.iml" />
+      <module fileurl="file://C:\Users\Connor Sedwick\Documents\CS 492\CS492-Project\final-project-team-4-reddit.iml" filepath="C:\Users\Connor Sedwick\Documents\CS 492\CS492-Project\final-project-team-4-reddit.iml" />
     </modules>
   </component>
 </project>

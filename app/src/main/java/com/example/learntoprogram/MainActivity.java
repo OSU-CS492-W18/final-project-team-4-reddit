@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -33,7 +35,8 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity
         implements RedditAdapter.OnItemClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        LoaderManager.LoaderCallbacks<String>,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String SEARCH_URL_KEY = "redditURL";
@@ -51,22 +54,31 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
 
+    public String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Sets color scheme
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        setUpTheme(pref);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         PostsDBHelper dbHelper = new PostsDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
         dbHelper.clearTable( mDB );
 
-        mRedditThreadsRV = (RecyclerView) findViewById(R.id.rv_reddit_threads);
+        mRedditThreadsRV = findViewById(R.id.rv_reddit_threads);
 
         mRedditThreadsRV.setLayoutManager(new LinearLayoutManager(this));
         mRedditThreadsRV.setHasFixedSize(true);
 
-        mRedditAdapter = new RedditAdapter(this);
+        mRedditAdapter = new RedditAdapter(this,this);
         mRedditThreadsRV.setAdapter(mRedditAdapter);
+
+        mLoadingProgressBar = findViewById(R.id.pb_loading_indicator);
+        mLoadingErrorMessage = findViewById(R.id.tv_loading_error);
 
         mRedditThreadsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -141,13 +153,31 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        pref.registerOnSharedPreferenceChangeListener(this);
 
+        loadPosts(pref, true);
+        //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+
+        getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
     }
 
-    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    public void loadPosts(SharedPreferences pref, boolean initialLoad) {
+        mLoadingProgressBar.setVisibility(View.VISIBLE);
 
+        Bundle loaderArgs = new Bundle();
+        loaderArgs.putString(SEARCH_URL_KEY, url);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        if (initialLoad) {
+            loaderManager.initLoader(POST_LOADER_ID, loaderArgs, this);
+            Log.d(TAG, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INITIAL LOAD");
+            doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        } else {
+            loaderManager.restartLoader(POST_LOADER_ID, loaderArgs, this);
+        }
+    }
+
+
+    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
         String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, redditURL);
@@ -219,9 +249,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
-
+        // Nothing ...
     }
 
+    public void setUpTheme(SharedPreferences sharedPreferences) {
+        SharedPreferences pref = sharedPreferences;
+        String themeName = pref.getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default_value));
+        switch (themeName) {
+            case "Blue":
+                this.setTheme(R.style.Blue);
+                break;
+            case "Dark":
+                setTheme(R.style.Dark);
+                break;
+            case "AppTheme":
+                this.setTheme(R.style.AppTheme);
+                break;
+            default:
+                break;
+        }
+    }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//        onCreate(new Bundle());
 
+    }
 }
