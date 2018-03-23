@@ -1,5 +1,6 @@
 package com.example.learntoprogram;
 
+import android.database.Cursor;
 import android.net.Uri;
 
 import org.json.JSONArray;
@@ -94,6 +95,58 @@ public class RedditUtils {
                 .appendQueryParameter(REDDIT_SORT_PARAM, sortValue)
                 .build()
                 .toString();
+    }
+
+    public static Post parseRowPost(Cursor cursor) {
+        Post post = new Post();
+
+        post.title = cursor.getString(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                )
+        );
+        post.user = cursor.getString(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                )
+        );
+        post.subreddit = cursor.getString(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                )
+        );
+        post.url = cursor.getString(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                )
+        );
+        post.id36 = cursor.getString(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                )
+        );
+        post.comments = (int)cursor.getLong(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_COMMENT_COUNT
+                )
+        );
+        post.upvotes = (int)cursor.getLong(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_UPVOTES
+                )
+        );
+        post.downvotes = (int)cursor.getLong(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_DOWNVOTES
+                )
+        );
+        post.timestamp = (int)cursor.getLong(
+                cursor.getColumnIndexOrThrow(
+                        PostsContract.LoadedPosts.COLUMN_POST_TIMESTAMP
+                )
+        );
+
+        return post;
     }
 
     public static String parseThreadCategory(String title) {
