@@ -38,10 +38,15 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
         mPosts = posts;
     }
 
+    public Cursor getLastPost( int position ) {
+        mThreadsCursor.moveToPosition( position );
+        return mThreadsCursor;
+    }
+
     @Override
     public int getItemCount() {
         if ( mThreadsCursor != null ) {
-            return Math.max(mThreadsCursor.getCount(), 0);
+            return Math.max( mThreadsCursor.getCount(), 0 );
         } else {
             return 0;
         }
