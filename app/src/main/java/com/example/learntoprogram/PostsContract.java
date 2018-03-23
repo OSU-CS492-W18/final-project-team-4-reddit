@@ -15,7 +15,7 @@ public class PostsContract {
         public static final String COLUMN_POST_SUBREDDIT = "Subreddit";
         public static final String COLUMN_POST_CATEGORY = "Category";
         public static final String COLUMN_POST_URL = "URL";
-        public static final String COLUMN_POST_IMG = "Image";
+        public static final String COLUMN_POST_ID36 = "ID36";
         public static final String COLUMN_POST_COMMENT_COUNT = "Comments";
         public static final String COLUMN_POST_UPVOTES = "Upvotes";
         public static final String COLUMN_POST_DOWNVOTES = "Downvotes";

@@ -69,6 +69,28 @@ public class MainActivity extends AppCompatActivity
         mRedditAdapter = new RedditAdapter(this);
         mRedditThreadsRV.setAdapter(mRedditAdapter);
 
+        mRedditThreadsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if ( !recyclerView.canScrollVertically( 1 ) ) {
+
+                    Cursor cursor = mRedditAdapter.getLastPost( mRedditAdapter.getItemCount() - 1 );
+
+                    String id = cursor.getString(
+                            cursor.getColumnIndexOrThrow(
+                                    PostsContract.LoadedPosts.COLUMN_POST_ID36
+                            )
+                    );
+
+                    doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", id, "25", "new" );
+
+                }
+
+            }
+        });
+
         Cursor cursor = mDB.rawQuery( "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME, null );
         mRedditAdapter.updatePosts( cursor );
 
@@ -105,19 +127,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-//        doRedditSearch("cpp", "new.json", "50", "new" );
-//        doRedditSearch("java", "new.json", "50", "new" );
-//        doRedditSearch("Python", "new.json", "50", "new" );
-//        doRedditSearch("golang", "new.json", "50", "new" );
-//        doRedditSearch("javascript", "new.json", "50", "new" );
-        doRedditSearch("learnprogramming", "new.json", "50", "new" );
+        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
 
     }
 
-    private void doRedditSearch(String subreddit, String postType, String postCount, String sortValue) {
+    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String redditURL = RedditUtils.buildRedditURL( subreddit, postType, postCount, sortValue );
+        String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, redditURL);
 
@@ -175,7 +192,6 @@ public class MainActivity extends AppCompatActivity
             );
 
             mRedditAdapter.updatePosts( cursor );
-            mRedditAdapter.updatePostsList( posts );
 
             mLoadingErrorMessage.setVisibility(View.INVISIBLE);
             mRedditThreadsRV.setVisibility(View.VISIBLE);
