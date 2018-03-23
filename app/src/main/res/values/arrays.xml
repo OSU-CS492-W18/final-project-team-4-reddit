@@ -2,13 +2,25 @@
 <resources>
     <string-array name="pref_theme_entries">
         <item>@string/pref_theme_dark</item>
-        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_blue</item>
         <item>@string/pref_theme_default</item>
     </string-array>
 
     <string-array name="pref_theme_values">
         <item>@string/pref_theme_dark_value</item>
-        <item>@string/pref_theme_light_value</item>
+        <item>@string/pref_theme_blue_value</item>
         <item>@string/pref_theme_default_value</item>
+    </string-array>
+
+    <string-array name="pref_text_color_entries">
+        <item>@string/pref_text_color_lime</item>
+        <item>@string/pref_text_color_navy</item>
+        <item>@string/pref_text_color_default</item>
+    </string-array>
+
+    <string-array name="pref_text_color_values">
+        <item>@string/pref_text_color_lime_value</item>
+        <item>@string/pref_text_color_navy_value</item>
+        <item>@string/pref_text_color_default_value</item>
     </string-array>
 </resources>

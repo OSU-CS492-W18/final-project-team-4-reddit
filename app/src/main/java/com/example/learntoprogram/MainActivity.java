@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -33,7 +35,8 @@ import android.util.Log;
 
 public class MainActivity extends AppCompatActivity
         implements RedditAdapter.OnItemClickListener,
-        LoaderManager.LoaderCallbacks<String> {
+        LoaderManager.LoaderCallbacks<String>,
+        SharedPreferences.OnSharedPreferenceChangeListener{
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String SEARCH_URL_KEY = "redditURL";
@@ -53,9 +56,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Sets color scheme
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        setUpTheme(pref);
         super.onCreate(savedInstanceState);
-
-        getApplication().setTheme(R.style.AppTheme);
 
         setContentView(R.layout.activity_main);
 
@@ -63,13 +67,16 @@ public class MainActivity extends AppCompatActivity
         mDB = dbHelper.getWritableDatabase();
         dbHelper.clearTable( mDB );
 
-        mRedditThreadsRV = (RecyclerView) findViewById(R.id.rv_reddit_threads);
+        mRedditThreadsRV = findViewById(R.id.rv_reddit_threads);
 
         mRedditThreadsRV.setLayoutManager(new LinearLayoutManager(this));
         mRedditThreadsRV.setHasFixedSize(true);
 
-        mRedditAdapter = new RedditAdapter(this);
+        mRedditAdapter = new RedditAdapter(this,this);
         mRedditThreadsRV.setAdapter(mRedditAdapter);
+
+        mLoadingProgressBar = findViewById(R.id.pb_loading_indicator);
+        mLoadingErrorMessage = findViewById(R.id.tv_loading_error);
 
         mRedditThreadsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -225,6 +232,26 @@ public class MainActivity extends AppCompatActivity
         // Nothing ...
     }
 
+    public void setUpTheme(SharedPreferences sharedPreferences) {
+        SharedPreferences pref = sharedPreferences;
+        String themeName = pref.getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default_value));
+        switch (themeName) {
+            case "Blue":
+                this.setTheme(R.style.Blue);
+                break;
+            case "Dark":
+                setTheme(R.style.Dark);
+                break;
+            case "AppTheme":
+                this.setTheme(R.style.AppTheme);
+                break;
+            default:
+                break;
+        }
+    }
 
-
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        onCreate(new Bundle());
+    }
 }

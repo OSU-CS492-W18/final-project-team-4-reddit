@@ -1,10 +1,17 @@
 package com.example.learntoprogram;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +23,21 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import android.database.Cursor;
 
+import static android.provider.Settings.Global.getString;
 
-public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThreadViewHolder> {
+
+public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThreadViewHolder> implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private ArrayList<RedditUtils.Post> mPosts;
+
 
     private OnItemClickListener mOnItemClickListener;
 
     Cursor mThreadsCursor;
 
-    public RedditAdapter(OnItemClickListener onItemClickListener) {
+    private Context mContext;
+
+    public RedditAdapter(OnItemClickListener onItemClickListener, Context context) {
+        mContext = context;
         mOnItemClickListener = onItemClickListener;
     }
 
@@ -60,6 +74,11 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
         holder.bind( mThreadsCursor );
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    }
+
+
     public interface OnItemClickListener {
         void onItemClick(RedditUtils.Post detailedReddit);
     }
@@ -86,6 +105,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
 
         }
 
+        @SuppressLint("ResourceAsColor")
         public void bind(Cursor cursor) {
 
             if ( cursor != null ) {
@@ -108,10 +128,24 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
                         )
                 );
 
+
                 mThreadTitleTV.setText( Html.fromHtml( title, Html.FROM_HTML_MODE_COMPACT ) );
                 mThreadAuthorTV.setText( Html.fromHtml( author, Html.FROM_HTML_MODE_COMPACT ) );
                 mThreadUpvotesTV.setText( upvotes.toString() );
 
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                String textColor = sharedPreferences.getString(
+                        mContext.getString(R.string.pref_text_color_key),
+                        mContext.getString(R.string.pref_text_color_default_value)
+                );
+
+                if (textColor.equals("#000000")) {
+                    mThreadTitleTV.setTextColor(ContextCompat.getColor(mContext, R.color.defaultTextColor));
+                }if (textColor.equals("#00FF00")){
+                    mThreadTitleTV.setTextColor(ContextCompat.getColor(mContext, R.color.Lime));
+                }if (textColor.equals("#000080")) {
+                    mThreadTitleTV.setTextColor(ContextCompat.getColor(mContext, R.color.Navy));
+                }
             }
 
         }
