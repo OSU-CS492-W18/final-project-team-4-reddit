@@ -107,22 +107,22 @@ public class RedditUtils {
         );
         post.user = cursor.getString(
                 cursor.getColumnIndexOrThrow(
-                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                        PostsContract.LoadedPosts.COLUMN_POST_USER
                 )
         );
         post.subreddit = cursor.getString(
                 cursor.getColumnIndexOrThrow(
-                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                        PostsContract.LoadedPosts.COLUMN_POST_SUBREDDIT
                 )
         );
         post.url = cursor.getString(
                 cursor.getColumnIndexOrThrow(
-                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                        PostsContract.LoadedPosts.COLUMN_POST_URL
                 )
         );
         post.id36 = cursor.getString(
                 cursor.getColumnIndexOrThrow(
-                        PostsContract.LoadedPosts.COLUMN_POST_TITLE
+                        PostsContract.LoadedPosts.COLUMN_POST_ID36
                 )
         );
         post.comments = (int)cursor.getLong(
