@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -97,33 +99,48 @@ public class MainActivity extends AppCompatActivity
         mLoadingProgressBar = (ProgressBar)findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessage = (TextView)findViewById(R.id.tv_loading_error);
 
-        mSearchBoxET = (EditText)findViewById(R.id.et_search_box);
+        ArrayAdapter<String> mACTVAdapter = new ArrayAdapter<String>( this, android.R.layout.select_dialog_item, RedditUtils.filterCats );
+        final AutoCompleteTextView mFilterACTV = (AutoCompleteTextView) findViewById(R.id.actv_filter_box);
+        mFilterACTV.setThreshold( 0 );
+        mFilterACTV.setAdapter( mACTVAdapter );
+        mFilterACTV.setHint( R.string.hint );
+        mFilterACTV.setOnDismissListener( new AutoCompleteTextView.OnDismissListener() {
+            public void onDismiss() {
+                String filterText = mFilterACTV.getText().toString().toUpperCase();
+
+                if ( TextUtils.isEmpty( filterText ) ) {
+                    Cursor cursor = mDB.rawQuery(
+                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                            null
+                    );
+
+                    mRedditAdapter.updatePosts( cursor );
+
+                }
+
+            }
+        });
 
         Button filterButton = (Button)findViewById(R.id.btn_search);
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String filterText = mSearchBoxET.getText().toString().toUpperCase();
+                String filterText = mFilterACTV.getText().toString().toUpperCase();
                 String filterQuery = RedditUtils.parseThreadCategory( filterText );
 
-                Cursor cursor;
-
                 if ( !TextUtils.isEmpty( filterQuery ) ) {
-                    cursor = mDB.rawQuery(
+                    Cursor cursor = mDB.rawQuery(
                             "SELECT * FROM " +
                                     PostsContract.LoadedPosts.TABLE_NAME +
                                     " WHERE " + PostsContract.LoadedPosts.COLUMN_POST_CATEGORY +
                                     "='" + filterQuery + "'",
                             null
                     );
-                } else {
-                    cursor = mDB.rawQuery(
-                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
-                            null
-                    );
+
+                    mRedditAdapter.updatePosts( cursor );
+
                 }
 
-                mRedditAdapter.updatePosts( cursor );
             }
         });
 
