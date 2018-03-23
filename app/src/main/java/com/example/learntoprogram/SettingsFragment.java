@@ -2,14 +2,14 @@ package com.example.learntoprogram;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.EditTextPreference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 /**
  * Created by Connor Sedwick on 3/21/2018.
  */
 
-public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -32,7 +32,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             themePref.setSummary(themePref.getText());
         }
     }
-
     @Override
     public void onResume() {
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -44,5 +43,4 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
-
 }

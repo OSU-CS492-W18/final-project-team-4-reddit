@@ -1,5 +1,6 @@
 package com.example.learntoprogram;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,9 +74,41 @@ public class MainActivity extends AppCompatActivity
 
         mSearchBoxET = (EditText)findViewById(R.id.et_search_box);
 
-        Button searchButton = (Button)findViewById(R.id.btn_search);
+        Button filterButton = (Button)findViewById(R.id.btn_search);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String filterText = mSearchBoxET.getText().toString().toUpperCase();
+                String filterQuery = RedditUtils.parseThreadCategory( filterText );
 
+                Cursor cursor;
+
+                if ( !TextUtils.isEmpty( filterQuery ) ) {
+                    cursor = mDB.rawQuery(
+                            "SELECT * FROM " +
+                                    PostsContract.LoadedPosts.TABLE_NAME +
+                                    " WHERE " + PostsContract.LoadedPosts.COLUMN_POST_CATEGORY +
+                                    "='" + filterQuery + "'",
+                            null
+                    );
+                } else {
+                    cursor = mDB.rawQuery(
+                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                            null
+                    );
+                }
+
+                mRedditAdapter.updatePosts( cursor );
+            }
+        });
+
+//        doRedditSearch("cpp", "new.json", "50", "new" );
+//        doRedditSearch("java", "new.json", "50", "new" );
+//        doRedditSearch("Python", "new.json", "50", "new" );
+//        doRedditSearch("golang", "new.json", "50", "new" );
+//        doRedditSearch("javascript", "new.json", "50", "new" );
         doRedditSearch("learnprogramming", "new.json", "50", "new" );
+
     }
 
     private void doRedditSearch(String subreddit, String postType, String postCount, String sortValue) {
@@ -88,12 +123,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(String detailedReddit) {
-        if (mToast != null) {
-            mToast.cancel();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public void onItemClick(RedditUtils.Post post) {
+        Intent detailedPostIntent = new Intent(this, RedditDetailActivity.class);
+        detailedPostIntent.putExtra(RedditUtils.EXTRA_POST, post);
+        startActivity(detailedPostIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        mToast = Toast.makeText(this, detailedReddit, Toast.LENGTH_LONG);
-        mToast.show();
     }
 
     @Override
@@ -115,9 +166,13 @@ public class MainActivity extends AppCompatActivity
             ArrayList<RedditUtils.Post> posts = RedditUtils.parsePostsJSON( data );
             dbHelper.storePosts( mDB, posts );
 
-            Cursor cursor = mDB.rawQuery( "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME, null );
+            Cursor cursor = mDB.rawQuery(
+                    "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                    null
+            );
 
             mRedditAdapter.updatePosts( cursor );
+            mRedditAdapter.updatePostsList( posts );
 
             mLoadingErrorMessage.setVisibility(View.INVISIBLE);
             mRedditThreadsRV.setVisibility(View.VISIBLE);
@@ -133,6 +188,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<String> loader) {
 
     }
+
 
 
 }

@@ -18,6 +18,9 @@ import android.database.Cursor;
 
 
 public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThreadViewHolder> {
+
+    private ArrayList<RedditUtils.Post> mPosts;
+
     private OnItemClickListener mOnItemClickListener;
 
     Cursor mThreadsCursor;
@@ -29,6 +32,10 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     public void updatePosts(Cursor cursor) {
         mThreadsCursor = cursor;
         notifyDataSetChanged();
+    }
+
+    public void updatePostsList(ArrayList<RedditUtils.Post> posts){
+        mPosts = posts;
     }
 
     @Override
@@ -55,7 +62,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String detailedReddit);
+        void onItemClick(RedditUtils.Post detailedReddit);
     }
 
     class RedditThreadViewHolder extends RecyclerView.ViewHolder {
@@ -72,10 +79,11 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    String detailRedditThreads = mDetailRedditThreads.get(getAdapterPosition());
-//                    mOnItemClickListener.onItemClick(detailRedditThreads);
+                    RedditUtils.Post detailPost = mPosts.get(getAdapterPosition());
+                    mOnItemClickListener.onItemClick(detailPost);
                 }
             });
+
         }
 
         public void bind(Cursor cursor) {
@@ -98,7 +106,6 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
                                 PostsContract.LoadedPosts.COLUMN_POST_UPVOTES
                         )
                 );
-
 
                 mThreadTitleTV.setText( Html.fromHtml( title, Html.FROM_HTML_MODE_COMPACT ) );
                 mThreadAuthorTV.setText( Html.fromHtml( author, Html.FROM_HTML_MODE_COMPACT ) );
