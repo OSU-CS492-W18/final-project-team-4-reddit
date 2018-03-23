@@ -19,8 +19,6 @@ import android.database.Cursor;
 
 public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThreadViewHolder> {
 
-    private ArrayList<RedditUtils.Post> mPosts;
-
     private OnItemClickListener mOnItemClickListener;
 
     Cursor mThreadsCursor;
@@ -32,10 +30,6 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
     public void updatePosts(Cursor cursor) {
         mThreadsCursor = cursor;
         notifyDataSetChanged();
-    }
-
-    public void updatePostsList(ArrayList<RedditUtils.Post> posts){
-        mPosts = posts;
     }
 
     public Cursor getLastPost( int position ) {
@@ -84,8 +78,9 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RedditUtils.Post detailPost = mPosts.get(getAdapterPosition());
-                    mOnItemClickListener.onItemClick(detailPost);
+                    mThreadsCursor.moveToPosition( getAdapterPosition() );
+                    RedditUtils.Post detailThread = RedditUtils.parseRowPost( mThreadsCursor );
+                    mOnItemClickListener.onItemClick( detailThread );
                 }
             });
 
@@ -94,6 +89,7 @@ public class RedditAdapter extends RecyclerView.Adapter<RedditAdapter.RedditThre
         public void bind(Cursor cursor) {
 
             if ( cursor != null ) {
+
                 String title = cursor.getString(
                         cursor.getColumnIndexOrThrow(
                                 PostsContract.LoadedPosts.COLUMN_POST_TITLE

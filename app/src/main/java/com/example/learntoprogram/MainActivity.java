@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity
 
                 if ( !recyclerView.canScrollVertically( 1 ) ) {
 
+                    Cursor cursor = mRedditAdapter.getLastPost( mRedditAdapter.getItemCount() - 1 );
 
                     String id = cursor.getString(
                             cursor.getColumnIndexOrThrow(
@@ -188,7 +189,6 @@ public class MainActivity extends AppCompatActivity
             );
 
             mRedditAdapter.updatePosts( cursor );
-            mRedditAdapter.updatePostsList( posts );
 
             mLoadingErrorMessage.setVisibility(View.INVISIBLE);
             mRedditThreadsRV.setVisibility(View.VISIBLE);
