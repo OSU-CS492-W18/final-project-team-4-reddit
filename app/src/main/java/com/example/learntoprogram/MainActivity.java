@@ -39,15 +39,19 @@ public class MainActivity extends AppCompatActivity
 
     private SQLiteDatabase mDB;
 
-    // BEGIN DUMMY DATA
     private RecyclerView mRedditThreadsRV;
     private RedditAdapter mRedditAdapter;
-    private Toast mToast;
 
-    // can keep these
     private EditText mSearchBoxET;
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
+
+    public String url;
+    public String subreddit;
+    public String postType;
+    public String after;
+    public String postCount;
+    public String sortValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +128,21 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        loadPosts(true);
+//        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+
+        getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
 
     }
 
+    @Override
+    protected void onDestroy() {
+        mDB.close();
+        super.onDestroy();
+    }
+
     private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
@@ -171,6 +184,27 @@ public class MainActivity extends AppCompatActivity
             url = args.getString(SEARCH_URL_KEY);
         }
         return new PostsLoader(this, url);
+    }
+
+/*    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }*/
+
+    public void loadPosts(boolean initialLoad) {
+        mLoadingProgressBar.setVisibility(View.VISIBLE);
+
+//        String redditURL = RedditUtils.buildRedditURL(subreddit, postType, after, postCount, sortValue);
+        Bundle loaderArgs = new Bundle();
+        loaderArgs.putString(SEARCH_URL_KEY, url);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        if (initialLoad) {
+            loaderManager.initLoader(POST_LOADER_ID, loaderArgs, this);
+            Log.d(TAG, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INITIAL LOAD");
+            doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        } else {
+            loaderManager.restartLoader(POST_LOADER_ID, loaderArgs, this);
+        }
     }
 
     @Override
