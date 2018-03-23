@@ -2,7 +2,7 @@
     <string name="app_name">Learn To Program</string>
     <string name="loading_error_message">Failed to search. Check your internet connection and try again.</string>
     <string name="hint">Search for a language...</string>
-    <string name="button_search">Search</string>
+    <string name="button_search">Filter</string>
     <string name="action_settings">Settings</string>
 
 

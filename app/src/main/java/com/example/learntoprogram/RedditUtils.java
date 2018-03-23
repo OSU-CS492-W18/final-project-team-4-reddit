@@ -38,7 +38,7 @@ public class RedditUtils {
     final static Pattern HTML_PATTERN = Pattern.compile("(( ?(\\[HTML\\]) ?)|(\\b(HTML) ?))");
     final static Pattern JAVASCRIPT_PATTERN = Pattern.compile("(( ?(\\[JAVASCRIPT\\])|(\\[JS\\])|(\\.JS) ?)|(\\b(JAVASCRIPT)|(JS)\\b))");
     final static Pattern PHP_PATTERN = Pattern.compile("(( ?(\\[PHP\\]) ?)|(\\b(PHP) ?))");
-    final static Pattern GOLANG_PATTERN = Pattern.compile("(( ?(\\[GOLANG\\])|(\\[GO\\]) ?)|(\\b(GOLANG)|(GO)\\b))");
+    final static Pattern GOLANG_PATTERN = Pattern.compile("(( ?(\\[GOLANG\\])|(\\[GO\\]) ?)|(\\b(GOLANG)\\b))");
     final static Pattern SWIFT_PATTERN = Pattern.compile("(( ?(\\[SWIFT\\]) ?)|(\\b(SWIFT) ?)|(\\b(IOS) ?))");
     final static Pattern RUBY_PATTERN = Pattern.compile("(( ?(\\[RUBY\\]) ?)|(\\b(RUBY) ?))");
     final static Pattern CSHARP_PATTERN = Pattern.compile("(( ?(\\[C#\\]) ?)|(\\b(C#) ?))");
@@ -70,6 +70,20 @@ public class RedditUtils {
             "SWIFT",
             "RUBY",
             "CSHARP"
+    };
+
+    final static String[] filterCats = {
+            "C",
+            "C++",
+            "C#",
+            "Java",
+            "Python",
+            "HTML",
+            "Javascript",
+            "PHP",
+            "Golang",
+            "Swift",
+            "Ruby"
     };
 
     public static class Post implements Serializable {
