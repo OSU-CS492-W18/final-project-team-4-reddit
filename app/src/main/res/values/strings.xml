@@ -44,7 +44,7 @@
 
     <!-- Strings for Detail Activity -->
     <string name="detail_user_string">Posted by: </string>
-    <string name="detail_subr_string">Under: </string>
-    <string name="detail_url_string">URL: </string>
+    <string name="detail_subr_string">Subreddit: </string>
+    <string name="detail_url_string">View online: </string>
 
 </resources>

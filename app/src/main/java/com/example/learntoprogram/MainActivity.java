@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
 
+    public String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Sets color scheme
@@ -151,13 +153,31 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        pref.registerOnSharedPreferenceChangeListener(this);
 
+        loadPosts(pref, true);
+        //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+
+        getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
     }
 
-    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    public void loadPosts(SharedPreferences pref, boolean initialLoad) {
+        mLoadingProgressBar.setVisibility(View.VISIBLE);
 
+        Bundle loaderArgs = new Bundle();
+        loaderArgs.putString(SEARCH_URL_KEY, url);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        if (initialLoad) {
+            loaderManager.initLoader(POST_LOADER_ID, loaderArgs, this);
+            Log.d(TAG, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INITIAL LOAD");
+            doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        } else {
+            loaderManager.restartLoader(POST_LOADER_ID, loaderArgs, this);
+        }
+    }
+
+
+    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
         String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, redditURL);
@@ -252,6 +272,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        onCreate(new Bundle());
+//        onCreate(new Bundle());
+
     }
 }
