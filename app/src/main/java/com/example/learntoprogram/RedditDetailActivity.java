@@ -17,6 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import android.text.Html;
 
 import com.example.learntoprogram.RedditUtils;
 
@@ -33,6 +37,7 @@ public class RedditDetailActivity extends AppCompatActivity {
     private TextView mTVcomments;
     private TextView mTVupvotes;
     private TextView mTVdownvotes;
+    private TextView mTVdate;
 
     private SQLiteDatabase mDB;
 
@@ -66,17 +71,19 @@ public class RedditDetailActivity extends AppCompatActivity {
         mTVcomments = findViewById(R.id.tv_detail_comments);
         mTVupvotes = findViewById(R.id.tv_detail_upvotes);
         mTVdownvotes = findViewById(R.id.tv_detail_downvotes);
+        mTVdate = findViewById(R.id.tv_detail_date);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(RedditUtils.EXTRA_POST)) {
             mPost = (RedditUtils.Post) intent.getSerializableExtra(RedditUtils.EXTRA_POST);
-            mTVtitle.setText(mPost.title);
-            mTVuser.setText(mPost.user);
+            mTVtitle.setText( Html.fromHtml( mPost.title, Html.FROM_HTML_MODE_COMPACT ) );
+            mTVuser.setText( Html.fromHtml( mPost.user, Html.FROM_HTML_MODE_COMPACT ) );
             mTVsubreddit.setText(mPost.subreddit);
             mTVurl.setText(mPost.url);
             mTVcomments.setText(String.valueOf(mPost.comments));
             mTVupvotes.setText(String.valueOf(mPost.upvotes));
             mTVdownvotes.setText(String.valueOf(mPost.downvotes));
+            mTVdate.setText(new Date(TimeUnit.SECONDS.toMillis(mPost.timestamp.longValue())).toString());
         }
         SharedPreferences sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(mContext);
         String textColor = sharedPreferences.getString(
