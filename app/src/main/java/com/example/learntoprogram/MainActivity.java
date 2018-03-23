@@ -1,6 +1,5 @@
 package com.example.learntoprogram;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.prefs.PreferenceChangeEvent;
 
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
@@ -40,16 +38,18 @@ public class MainActivity extends AppCompatActivity
         LoaderManager.LoaderCallbacks<String>,
         SharedPreferences.OnSharedPreferenceChangeListener{
 
-
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String SEARCH_URL_KEY = "redditURL";
     private final static int POST_LOADER_ID = 0;
 
     private SQLiteDatabase mDB;
 
+    // BEGIN DUMMY DATA
     private RecyclerView mRedditThreadsRV;
     private RedditAdapter mRedditAdapter;
+    private Toast mToast;
 
+    // can keep these
     private EditText mSearchBoxET;
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
@@ -153,19 +153,31 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        pref.registerOnSharedPreferenceChangeListener(this);
 
-        loadPosts(sharedPreferences, true);
+        loadPosts(pref, true);
         //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
 
         getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
-
     }
 
-    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    public void loadPosts(SharedPreferences pref, boolean initialLoad) {
+        mLoadingProgressBar.setVisibility(View.VISIBLE);
 
+        Bundle loaderArgs = new Bundle();
+        loaderArgs.putString(SEARCH_URL_KEY, url);
+        LoaderManager loaderManager = getSupportLoaderManager();
+        if (initialLoad) {
+            loaderManager.initLoader(POST_LOADER_ID, loaderArgs, this);
+            Log.d(TAG, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INITIAL LOAD");
+            doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        } else {
+            loaderManager.restartLoader(POST_LOADER_ID, loaderArgs, this);
+        }
+    }
+
+
+    private void doRedditSearch(String subreddit, String postType, String after, String postCount, String sortValue) {
         String redditURL = RedditUtils.buildRedditURL( subreddit, postType, after, postCount, sortValue );
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, redditURL);
@@ -200,43 +212,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        mDB.close();
-        super.onDestroy();
-    }
-
-    @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         String url = null;
         if (args != null) {
             url = args.getString(SEARCH_URL_KEY);
         }
         return new PostsLoader(this, url);
-    }
-
-    public void loadPosts(SharedPreferences sharedPreferences, boolean initialLoad) {
-        String textColor = sharedPreferences.getString(
-                getString(R.string.pref_text_color_key),
-                getString(R.string.pref_text_color_default_value)
-        );
-
-        String theme = sharedPreferences.getString(
-                getString(R.string.pref_theme_key),
-                getString(R.string.pref_theme_default_value)
-        );
-
-        mLoadingProgressBar.setVisibility(View.VISIBLE);
-
-        Bundle loaderArgs = new Bundle();
-        loaderArgs.putString(SEARCH_URL_KEY, url);
-        LoaderManager loaderManager = getSupportLoaderManager();
-        if (initialLoad) {
-            loaderManager.initLoader(POST_LOADER_ID, loaderArgs, this);
-            Log.d(TAG, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INITIAL LOAD");
-            doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
-        } else {
-            loaderManager.restartLoader(POST_LOADER_ID, loaderArgs, this);
-        }
     }
 
     @Override
@@ -291,7 +272,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        onCreate(new Bundle());
-    }
+//        onCreate(new Bundle());
 
+    }
 }
