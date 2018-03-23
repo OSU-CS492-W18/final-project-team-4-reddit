@@ -48,16 +48,30 @@ public class MainActivity extends AppCompatActivity
 
     public String url;
 
+    private static final String THREADS_LOADED_KEY = "THREADS_LOADED";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         //Sets color scheme
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         setUpTheme(pref);
-        super.onCreate(savedInstanceState);
+      
+        boolean threadsLoaded = false;
+
+        if ( savedInstanceState != null && savedInstanceState.containsKey( THREADS_LOADED_KEY ) ) {
+            threadsLoaded = (boolean)savedInstanceState.getSerializable( THREADS_LOADED_KEY );
+        }
+
         setContentView(R.layout.activity_main);
         PostsDBHelper dbHelper = new PostsDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
-        dbHelper.clearTable( mDB );
+
+        if ( !threadsLoaded ) {
+            dbHelper.clearTable( mDB );
+        }
+      
         mRedditThreadsRV = findViewById(R.id.rv_reddit_threads);
         mRedditThreadsRV.setLayoutManager(new LinearLayoutManager(this));
         mRedditThreadsRV.setHasFixedSize(true);
@@ -124,8 +138,10 @@ public class MainActivity extends AppCompatActivity
 
         pref.registerOnSharedPreferenceChangeListener(this);
 
-        loadPosts(pref, true);
-        //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        if ( !threadsLoaded ) {
+            loadPosts(pref, true);
+            //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
+        }
 
         getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
     }
@@ -152,17 +168,20 @@ public class MainActivity extends AppCompatActivity
         mLoadingProgressBar.setVisibility(View.VISIBLE);
         getSupportLoaderManager().restartLoader(POST_LOADER_ID, args, this);
     }
+          
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+          
     @Override
     public void onItemClick(RedditUtils.Post post) {
         Intent detailedPostIntent = new Intent(this, RedditDetailActivity.class);
         detailedPostIntent.putExtra(RedditUtils.EXTRA_POST, post);
         startActivity(detailedPostIntent);
     }
+          
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -174,6 +193,7 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
+          
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
         String url = null;
@@ -182,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         }
         return new PostsLoader(this, url);
     }
+          
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         PostsDBHelper dbHelper = new PostsDBHelper(this);
@@ -201,6 +222,7 @@ public class MainActivity extends AppCompatActivity
             mLoadingErrorMessage.setVisibility(View.VISIBLE);
         }
     }
+          
     @Override
     public void onLoaderReset(Loader<String> loader) {
         // Nothing ...
@@ -222,8 +244,20 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
     }
+          
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         //onCreate(new Bundle());
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if ( mDB != null ) {
+            outState.putSerializable( THREADS_LOADED_KEY, true );
+        } else {
+            outState.putSerializable( THREADS_LOADED_KEY, false );
+        }
+    }
+          
 }
