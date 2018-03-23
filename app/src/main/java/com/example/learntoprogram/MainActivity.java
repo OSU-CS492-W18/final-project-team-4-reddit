@@ -45,7 +45,9 @@ public class MainActivity extends AppCompatActivity
     private EditText mSearchBoxET;
     private ProgressBar mLoadingProgressBar;
     private TextView mLoadingErrorMessage;
+
     public String url;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Sets color scheme
@@ -119,22 +121,18 @@ public class MainActivity extends AppCompatActivity
         });
         pref.registerOnSharedPreferenceChangeListener(this);
 
+
+        pref.registerOnSharedPreferenceChangeListener(this);
+
         loadPosts(pref, true);
         //doRedditSearch( "learnprogramming+cpp+Python+javascript+golang", "new.json", null, "25", "new" );
-        //getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
+
+        getSupportLoaderManager().initLoader(POST_LOADER_ID, null, this);
     }
-
-    @Override
-    protected void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
-        mDB.close();
-        super.onDestroy();
-    }
-
-
 
     public void loadPosts(SharedPreferences pref, boolean initialLoad) {
         mLoadingProgressBar.setVisibility(View.VISIBLE);
+
         Bundle loaderArgs = new Bundle();
         loaderArgs.putString(SEARCH_URL_KEY, url);
         LoaderManager loaderManager = getSupportLoaderManager();
