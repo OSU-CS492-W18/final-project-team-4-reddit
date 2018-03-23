@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -12,6 +14,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -34,7 +38,8 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity
         implements RedditAdapter.OnItemClickListener,
         LoaderManager.LoaderCallbacks<String>,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener{
+
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String SEARCH_URL_KEY = "redditURL";
@@ -53,20 +58,27 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Sets color scheme
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        setUpTheme(pref);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         PostsDBHelper dbHelper = new PostsDBHelper(this);
         mDB = dbHelper.getWritableDatabase();
         dbHelper.clearTable( mDB );
 
-        mRedditThreadsRV = (RecyclerView) findViewById(R.id.rv_reddit_threads);
+        mRedditThreadsRV = findViewById(R.id.rv_reddit_threads);
 
         mRedditThreadsRV.setLayoutManager(new LinearLayoutManager(this));
         mRedditThreadsRV.setHasFixedSize(true);
 
-        mRedditAdapter = new RedditAdapter(this);
+        mRedditAdapter = new RedditAdapter(this,this);
         mRedditThreadsRV.setAdapter(mRedditAdapter);
+
+        mLoadingProgressBar = findViewById(R.id.pb_loading_indicator);
+        mLoadingErrorMessage = findViewById(R.id.tv_loading_error);
 
         mRedditThreadsRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -96,33 +108,48 @@ public class MainActivity extends AppCompatActivity
         mLoadingProgressBar = (ProgressBar)findViewById(R.id.pb_loading_indicator);
         mLoadingErrorMessage = (TextView)findViewById(R.id.tv_loading_error);
 
-        mSearchBoxET = (EditText)findViewById(R.id.et_search_box);
+        ArrayAdapter<String> mACTVAdapter = new ArrayAdapter<String>( this, android.R.layout.select_dialog_item, RedditUtils.filterCats );
+        final AutoCompleteTextView mFilterACTV = (AutoCompleteTextView) findViewById(R.id.actv_filter_box);
+        mFilterACTV.setThreshold( 0 );
+        mFilterACTV.setAdapter( mACTVAdapter );
+        mFilterACTV.setHint( R.string.hint );
+        mFilterACTV.setOnDismissListener( new AutoCompleteTextView.OnDismissListener() {
+            public void onDismiss() {
+                String filterText = mFilterACTV.getText().toString().toUpperCase();
+
+                if ( TextUtils.isEmpty( filterText ) ) {
+                    Cursor cursor = mDB.rawQuery(
+                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
+                            null
+                    );
+
+                    mRedditAdapter.updatePosts( cursor );
+
+                }
+
+            }
+        });
 
         Button filterButton = (Button)findViewById(R.id.btn_search);
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String filterText = mSearchBoxET.getText().toString().toUpperCase();
+                String filterText = mFilterACTV.getText().toString().toUpperCase();
                 String filterQuery = RedditUtils.parseThreadCategory( filterText );
 
-                Cursor cursor;
-
                 if ( !TextUtils.isEmpty( filterQuery ) ) {
-                    cursor = mDB.rawQuery(
+                    Cursor cursor = mDB.rawQuery(
                             "SELECT * FROM " +
                                     PostsContract.LoadedPosts.TABLE_NAME +
                                     " WHERE " + PostsContract.LoadedPosts.COLUMN_POST_CATEGORY +
                                     "='" + filterQuery + "'",
                             null
                     );
-                } else {
-                    cursor = mDB.rawQuery(
-                            "SELECT * FROM " + PostsContract.LoadedPosts.TABLE_NAME,
-                            null
-                    );
+
+                    mRedditAdapter.updatePosts( cursor );
+
                 }
 
-                mRedditAdapter.updatePosts( cursor );
             }
         });
 
@@ -241,18 +268,30 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
+        // Nothing ...
+    }
 
+    public void setUpTheme(SharedPreferences sharedPreferences) {
+        SharedPreferences pref = sharedPreferences;
+        String themeName = pref.getString(getString(R.string.pref_theme_key), getString(R.string.pref_theme_default_value));
+        switch (themeName) {
+            case "Blue":
+                this.setTheme(R.style.Blue);
+                break;
+            case "Dark":
+                setTheme(R.style.Dark);
+                break;
+            case "AppTheme":
+                this.setTheme(R.style.AppTheme);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        loadPosts(sharedPreferences, false);
-
-        String forecastLocation = sharedPreferences.getString(
-                getString(R.string.pref_text_color_key),
-                getString(R.string.pref_text_color_default_value)
-        );
-
+        onCreate(new Bundle());
     }
 
 }

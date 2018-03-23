@@ -2,19 +2,39 @@
     <string name="app_name">Learn To Program</string>
     <string name="loading_error_message">Failed to search. Check your internet connection and try again.</string>
     <string name="hint">Search for a language...</string>
-    <string name="button_search">Search</string>
+    <string name="button_search">Filter</string>
     <string name="action_settings">Settings</string>
 
 
     <!-- Strings for text color pref -->
     <string name="pref_text_color_key" translatable="false">pref_text_color</string>
     <string name="pref_text_color_title">Text color</string>
-    <string name="pref_text_color_default_value">Black</string>
+
+    <string name="pref_text_color_default">Standard</string>
+    <string name="pref_text_color_lime">Lime</string>
+    <string name="pref_text_color_navy">Navy</string>
+
+    <string name="pref_text_color_default_value">#000000</string>
+    <string name="pref_text_color_lime_value">#00FF00</string>
+    <string name="pref_text_color_navy_value">#000080</string>
 
     <!-- Strings for theme pref -->
     <string name="pref_theme_key" translatable="false">pref_theme</string>
     <string name="pref_theme_title">Theme</string>
-    <string name="pref_theme_default_value">Light</string>
+
+    <string name="pref_theme_default">Standard</string>
+    <string name="pref_theme_blue">Blue</string>
+    <string name="pref_theme_dark">Dark</string>
+
+    <string name="pref_theme_default_value">AppTheme</string>
+    <string name="pref_theme_blue_value">Blue</string>
+    <string name="pref_theme_dark_value">Dark</string>
+
+
+
+
+
+
 
     <!-- Strings for theme pref -->
     <string name="pref_filter_switch_key" translatable="false">pref_filter_switch</string>

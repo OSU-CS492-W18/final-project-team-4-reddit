@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:textSize="30sp"
-        android:textColor="#000"/>
-
+        android:textColor="#1E1E1E"/>
+        <!--android:textColor="#000"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="#000"
+            android:textColor="#1E1E1E"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/detail_user_string"/>
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="#000"
+            android:textColor="#1E1E1E"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"/>
 

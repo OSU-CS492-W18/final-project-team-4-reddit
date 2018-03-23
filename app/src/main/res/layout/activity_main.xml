@@ -8,19 +8,18 @@
     android:padding="8sp"
     tools:context="com.example.learntoprogram.MainActivity">
 
-    <EditText
-        android:id="@+id/et_search_box"
+    <AutoCompleteTextView
+        android:id="@+id/actv_filter_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:hint="@string/hint"/>
+        android:textSize="22sp" />
 
     <Button
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/button_search"
-        android:textSize="22sp"/>
+        android:textSize="22sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
