@@ -1,23 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.learntoprogram.RedditDetailActivity">
 
     <TextView
-        android:id="@+id/tv_date"
+        android:id="@+id/tv_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:textSize="30sp"
         android:textColor="#000"/>
 
-    <TextView
-        android:id="@+id/tv_reddit_thread_item_description"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp"
-        android:layout_marginLeft="16dp"
-        android:textSize="30sp" />
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/detail_user_string"/>
+
+        <TextView
+            android:id="@+id/tv_detail_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/detail_subr_string"/>
+
+        <TextView
+            android:id="@+id/tv_detail_subreddit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/detail_url_string"/>
+
+        <TextView
+            android:id="@+id/tv_detail_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#0000EE"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:onClick="openURLinBrowser"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_comment_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="6dp"
+            android:alpha="0.4"
+            android:adjustViewBounds="true"
+            android:saveEnabled="false"
+            android:src="@drawable/ic_comment_black_24dp" />
+
+        <TextView
+            android:id="@+id/tv_detail_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:scrollHorizontally="true"
+            android:text="000"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+        <ImageView
+            android:id="@+id/iv_detail_upvote_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.4"
+            android:adjustViewBounds="true"
+            android:saveEnabled="false"
+            android:src="@drawable/ic_arrow" />
+
+        <TextView
+            android:id="@+id/tv_detail_upvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:scrollHorizontally="true"
+            android:text="000"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+        <ImageView
+            android:id="@+id/iv_detail_downvote_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.4"
+            android:scaleY="-1"
+            android:adjustViewBounds="true"
+            android:saveEnabled="false"
+            android:src="@drawable/ic_arrow" />
+
+        <TextView
+            android:id="@+id/tv_detail_downvotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6dp"
+            android:scrollHorizontally="true"
+            android:text="000"
+            android:ellipsize="end"
+            android:maxLines="1"/>
+
+    </LinearLayout>
 
 </LinearLayout>

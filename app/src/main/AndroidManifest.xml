@@ -26,6 +26,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.learntoprogram.MainActivity" />
         </activity>
+        <activity
+            android:name="com.example.learntoprogram.RedditDetailActivity"
+            android:parentActivityName="com.example.learntoprogram.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.learntoprogram.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
