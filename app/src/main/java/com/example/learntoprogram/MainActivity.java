@@ -102,12 +102,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-//        doRedditSearch("cpp", "new.json", "50", "new" );
-//        doRedditSearch("java", "new.json", "50", "new" );
-//        doRedditSearch("Python", "new.json", "50", "new" );
-//        doRedditSearch("golang", "new.json", "50", "new" );
-//        doRedditSearch("javascript", "new.json", "50", "new" );
-        doRedditSearch("learnprogramming", "new.json", "50", "new" );
+        doRedditSearch("learnprogramming+cpp+Python+javascript+golang", "new.json", "100", "new" );
 
     }
 

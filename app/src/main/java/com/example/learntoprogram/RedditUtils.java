@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import java.util.regex.Pattern;
 
 
 public class RedditUtils {
+
+    public static final String EXTRA_POST = "RedditUtils.Post";
+
     final static String REDDIT_BASE_URL = "http://www.reddit.com";
     final static String REDDIT_SUBREDDIT_PARAM = "r";
     final static String REDDIT_SUBREDDIT_VALUE = "";
@@ -26,7 +30,7 @@ public class RedditUtils {
 
     final static Pattern C_PATTERN = Pattern.compile("(( ?(\\[C\\]) ?)|(\\b(C(?!\\+|#))\\b))");
     final static Pattern CPP_PATTERN = Pattern.compile("(( ?(\\[CPP\\])|(\\[C\\+\\+\\]) ?)|(\\b(CPP)|(C\\+\\+) ?))");
-    final static Pattern JAVA_PATTERN = Pattern.compile("(( ?(\\[JAVA\\]) ?)|(\\b(JAVA) ?))");
+    final static Pattern JAVA_PATTERN = Pattern.compile("(( ?(\\[JAVA\\]) ?)|(\\b(JAVA)\\b))");
     final static Pattern PYTHON_PATTERN = Pattern.compile("(( ?(\\[PYTHON\\]) ?)|(\\b(PYTHON) ?))");
     final static Pattern HTML_PATTERN = Pattern.compile("(( ?(\\[HTML\\]) ?)|(\\b(HTML) ?))");
     final static Pattern JAVASCRIPT_PATTERN = Pattern.compile("(( ?(\\[JAVASCRIPT\\])|(\\[JS\\])|(\\.JS) ?)|(\\b(JAVASCRIPT)|(JS)\\b))");
@@ -35,6 +39,7 @@ public class RedditUtils {
     final static Pattern SWIFT_PATTERN = Pattern.compile("(( ?(\\[SWIFT\\]) ?)|(\\b(SWIFT) ?)|(\\b(IOS) ?))");
     final static Pattern RUBY_PATTERN = Pattern.compile("(( ?(\\[RUBY\\]) ?)|(\\b(RUBY) ?))");
     final static Pattern CSHARP_PATTERN = Pattern.compile("(( ?(\\[C#\\]) ?)|(\\b(C#) ?))");
+
 
     final static Pattern[] patterns = {
             C_PATTERN,
@@ -64,7 +69,7 @@ public class RedditUtils {
             "CSHARP"
     };
 
-    public static class Post {
+    public static class Post implements Serializable {
         public String title;
         public String user;
         public String subreddit;
@@ -126,7 +131,7 @@ public class RedditUtils {
 
                 post.category = parseThreadCategory( post.title );
 
-                // System.out.println( post.category + "  ==  " + post.title );
+                System.out.println( post.category + "  ==  " + post.title );
 
                 postsList.add( post );
             }
