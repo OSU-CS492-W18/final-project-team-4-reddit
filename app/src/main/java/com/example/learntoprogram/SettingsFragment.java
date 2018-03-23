@@ -38,9 +38,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         if (key.equals(getString(R.string.pref_text_color_key))) {
             ListPreference textColorPref = (ListPreference) findPreference(key);
             textColorPref.setSummary(textColorPref.getValue());
-            Intent intent = new Intent(getContext(), MainActivity.class);
+            /*Intent intent = new Intent(getContext(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            startActivity(intent);*/
         }
         if (key.equals(getString(R.string.pref_theme_key))) {
             ListPreference themePref = (ListPreference) findPreference(key);
