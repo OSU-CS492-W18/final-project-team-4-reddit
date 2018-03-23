@@ -46,7 +46,7 @@ public class PostsDBHelper extends SQLiteOpenHelper {
                     PostsContract.LoadedPosts.COLUMN_POST_SUBREDDIT + ", " +
                     PostsContract.LoadedPosts.COLUMN_POST_CATEGORY + ", " +
                     PostsContract.LoadedPosts.COLUMN_POST_URL + ", " +
-                    PostsContract.LoadedPosts.COLUMN_POST_IMG + ", " +
+                    PostsContract.LoadedPosts.COLUMN_POST_ID36 + ", " +
                     PostsContract.LoadedPosts.COLUMN_POST_COMMENT_COUNT + ", " +
                     PostsContract.LoadedPosts.COLUMN_POST_UPVOTES + ", " +
                     PostsContract.LoadedPosts.COLUMN_POST_DOWNVOTES + ", " +
@@ -59,7 +59,7 @@ public class PostsDBHelper extends SQLiteOpenHelper {
         SQL_INSERT_THREAD.bindString( 3, post.subreddit );
         SQL_INSERT_THREAD.bindString( 4, post.category );
         SQL_INSERT_THREAD.bindString( 5, post.url );
-        SQL_INSERT_THREAD.bindString( 6, post.image );
+        SQL_INSERT_THREAD.bindString( 6, post.id36 );
         SQL_INSERT_THREAD.bindLong( 7, post.comments );
         SQL_INSERT_THREAD.bindLong( 8, post.upvotes );
         SQL_INSERT_THREAD.bindLong( 9, post.downvotes );
@@ -105,7 +105,7 @@ public class PostsDBHelper extends SQLiteOpenHelper {
                         PostsContract.LoadedPosts.COLUMN_POST_SUBREDDIT + " TEXT NOT NULL, " +
                         PostsContract.LoadedPosts.COLUMN_POST_CATEGORY + " TEXT NOT NULL, " +
                         PostsContract.LoadedPosts.COLUMN_POST_URL + " TEXT NOT NULL, " +
-                        PostsContract.LoadedPosts.COLUMN_POST_IMG + " TEXT, " +
+                        PostsContract.LoadedPosts.COLUMN_POST_ID36 + " TEXT, " +
                         PostsContract.LoadedPosts.COLUMN_POST_COMMENT_COUNT + " INTEGER, " +
                         PostsContract.LoadedPosts.COLUMN_POST_UPVOTES + " INTEGER, " +
                         PostsContract.LoadedPosts.COLUMN_POST_DOWNVOTES + " INTEGER, " +
